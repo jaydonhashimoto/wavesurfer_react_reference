@@ -3,12 +3,8 @@ import './App.css';
 import WaveSurfer from 'wavesurfer.js';
 
 function App() {
-  // const [wavesurfer, setWavesurfer] = useState('');
-  // const [wavesurfer2, setWavesurfer2] = useState('');
-  const wavesurfer = WaveSurfer.create({
-    container: document.querySelector('#waveform')
-  });
-  const wavesurfer2 = '';
+  let wavesurfer = '';
+  let wavesurfer2 = '';
   const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {
@@ -16,7 +12,9 @@ function App() {
       container: '#waveform'
     });
     wavesurfer.setVolume(0.25);
-    wavesurfer.load('music/G_Major_Practice_BT.mp3');
+    wavesurfer.load(
+      'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/Cm_Blues_BT.mp3'
+    );
     wavesurfer.on('ready', () => {
       wavesurfer.play();
     });
@@ -30,13 +28,16 @@ function App() {
       container: '#waveform2'
     });
     wavesurfer2.setVolume(0.25);
-    wavesurfer2.load('music/G_Major_Practice_BT.mp3');
+    wavesurfer2.load(
+      'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/Cm_Blues_BT.mp3'
+    );
     wavesurfer2.on('ready', () => {
       wavesurfer2.play();
     });
   });
   const play = () => {
-    setIsClicked = true;
+    // setIsClicked(true);
+    wavesurfer.play();
   };
 
   const pause1 = () => {

@@ -6,20 +6,30 @@ function App() {
   const [wave, setWave] = useState([]);
 
   useEffect(() => {
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       wave[i] = WaveSurfer.create({
         container: '#waveform'
       });
       wave[i].setVolume(0.25);
     }
 
-    for (let i = 0; i < 2; i++) {
-      wave[i].load(
-        'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/Cm_Blues_BT.mp3'
-      );
-      // wave[i].on('ready', () => {
-      //   wave[i].play();
-      // });
+    for (let i = 0; i < 3; i++) {
+      if (i === 0) {
+        wave[0].load(
+          'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/drums1.wav'
+        );
+      } else if (i === 1) {
+        wave[1].load(
+          'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/rhythm1.wav'
+        );
+      } else if (i === 2) {
+        wave[2].load(
+          'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/lead1.wav'
+        );
+      }
+      wave[i].on('ready', () => {
+        wave[i].play();
+      });
     }
   });
 

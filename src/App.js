@@ -4,119 +4,54 @@ import WaveSurfer from 'wavesurfer.js';
 
 function App() {
   const [wave, setWave] = useState([]);
-
+  let count = 0;
   useEffect(() => {
-    for (let i = 0; i < 3; i++) {
-      wave[i] = WaveSurfer.create({
-        container: '#waveform' + i
-      });
-      wave[i].setVolume(0.25);
-    }
-
-    for (let i = 0; i < 3; i++) {
-      if (i === 0) {
-        wave[0].setWaveColor('blue');
-        wave[0].load(
+    const waveArray = [
+      {
+        id: 0,
+        link:
           'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/drums1.wav'
-        );
-      } else if (i === 1) {
-        wave[1].setWaveColor('red');
-        wave[1].load(
+      },
+      {
+        id: 1,
+        link:
           'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/rhythm1.wav'
-        );
-      } else if (i === 2) {
-        wave[2].setWaveColor('green');
-        wave[2].load(
+      },
+      {
+        id: 2,
+        link:
           'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/lead1.wav'
-        );
       }
-      wave[i].on('ready', () => {
-        wave[i].play();
-      });
-    }
+    ];
+    setWave([...waveArray]);
+    // for (let i = 0; i < wave.length; i++) {
+    //   wave[i] = WaveSurfer.create({
+    //     container: '#waveform' + i
+    //   });
+    //   wave[i].setVolume(0.25);
+    //   wave[i].load(wave[i].link);
+    //   // wave[i].on('ready', () => {
+    //   //   wave[i].play();
+    //   // });
+    // }
+    // console.log(wave);
+  }, []);
+  /**
+   * @TODO Figure out how to programmtically do this
+   */
+  wave[0] = WaveSurfer.create({
+    container: '#waveform' + 0
   });
-
+  wave[0].setVolume(0.25);
+  wave[0].load(wave[0].link);
   return (
     <div className="App" style={container}>
-      <div>
-        <button
-          onClick={() => {
-            wave[0].playPause();
-            wave[1].playPause();
-            wave[2].playPause();
-          }}
-        >
-          Play/Pause
-        </button>
-        <button
-          onClick={() => {
-            wave[0].stop();
-            wave[1].stop();
-            wave[2].stop();
-          }}
-        >
-          Reset
-        </button>
-      </div>
-      <div>
-        <div id="waveform0"></div>
-        <button
-          id="playBtn"
-          onClick={() => {
-            wave[0].play();
-          }}
-        >
-          Play
-        </button>
-        <button
-          id="pauseBtn"
-          onClick={() => {
-            wave[0].pause();
-          }}
-        >
-          Pause
-        </button>
-      </div>
-
-      <div>
-        <div id="waveform1"></div>
-        <button
-          id="playBtn2"
-          onClick={() => {
-            wave[1].play();
-          }}
-        >
-          Play
-        </button>
-        <button
-          id="pauseBtn2"
-          onClick={() => {
-            wave[1].pause();
-          }}
-        >
-          Pause
-        </button>
-      </div>
-
-      <div>
-        <div id="waveform2"></div>
-        <button
-          id="playBtn2"
-          onClick={() => {
-            wave[2].play();
-          }}
-        >
-          Play
-        </button>
-        <button
-          id="pauseBtn2"
-          onClick={() => {
-            wave[2].pause();
-          }}
-        >
-          Pause
-        </button>
-      </div>
+      <div id="waveform0"></div>
+      {wave.map(w => (
+        <div>
+          <div key={w.id} id={'waveform' + w.id}></div>
+        </div>
+      ))}
     </div>
   );
 }

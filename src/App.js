@@ -3,53 +3,68 @@ import './App.css';
 import WaveSurfer from 'wavesurfer.js';
 
 function App() {
-  const [wave, setWave] = useState([]);
-  let count = 0;
+  const [wave, setWave] = useState([
+    {
+      id: 0,
+      link:
+        'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/drums1.wav'
+    },
+    {
+      id: 1,
+      link:
+        'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/rhythm1.wav'
+    },
+    {
+      id: 2,
+      link:
+        'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/lead1.wav'
+    }
+  ]);
+  const [wave2, setW2] = useState([]);
   useEffect(() => {
-    const waveArray = [
-      {
-        id: 0,
-        link:
-          'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/drums1.wav'
-      },
-      {
-        id: 1,
-        link:
-          'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/rhythm1.wav'
-      },
-      {
-        id: 2,
-        link:
-          'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/lead1.wav'
-      }
-    ];
-    setWave([...waveArray]);
-    // for (let i = 0; i < wave.length; i++) {
-    //   wave[i] = WaveSurfer.create({
-    //     container: '#waveform' + i
-    //   });
-    //   wave[i].setVolume(0.25);
-    //   wave[i].load(wave[i].link);
-    //   // wave[i].on('ready', () => {
-    //   //   wave[i].play();
-    //   // });
-    // }
-    // console.log(wave);
-  }, []);
-  /**
-   * @TODO Figure out how to programmtically do this
-   */
-  wave[0] = WaveSurfer.create({
-    container: '#waveform' + 0
+    for (let i = 0; i < wave.length; ++i) {
+      wave2[i] = WaveSurfer.create({
+        container: '#waveform' + i
+      });
+      wave2[i].setVolume(0.25);
+      wave2[i].load(wave[i].link);
+    }
   });
-  wave[0].setVolume(0.25);
-  wave[0].load(wave[0].link);
+
   return (
     <div className="App" style={container}>
-      <div id="waveform0"></div>
+      <div>
+        <button
+          onClick={() => {
+            console.log(wave[0]);
+            wave2[0].playPause();
+            wave2[1].playPause();
+            wave2[2].playPause();
+          }}
+        >
+          Play/Pause
+        </button>
+        <button
+          onClick={() => {
+            wave2[0].stop();
+            wave2[1].stop();
+            wave2[2].stop();
+          }}
+        >
+          Reset
+        </button>
+      </div>
       {wave.map(w => (
         <div>
           <div key={w.id} id={'waveform' + w.id}></div>
+          <button
+            onClick={() => {
+              wave2[w.id].playPause();
+            }}
+          >
+            Play/Pause
+          </button>
+          <p>{w.id}</p>
         </div>
       ))}
     </div>

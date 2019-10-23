@@ -21,6 +21,8 @@ function App() {
     }
   ]);
   const [wave2, setW2] = useState([]);
+  const [volume, setCurrentVolume] = useState(25);
+
   useEffect(() => {
     for (let i = 0; i < wave.length; ++i) {
       wave2[i] = WaveSurfer.create({
@@ -29,7 +31,7 @@ function App() {
       wave2[i].setVolume(0.25);
       wave2[i].load(wave[i].link);
     }
-  });
+  }, []);
 
   return (
     <div className="App" style={container}>
@@ -52,18 +54,38 @@ function App() {
         >
           Reset
         </button>
+        <div className="slidecontainer">
+          <input
+            type="range"
+            min="0"
+            max="50"
+            value={volume}
+            className="slider"
+            id="myRange"
+            onChange={e => {
+              setCurrentVolume(e.target.value);
+              wave2.forEach(wave => {
+                wave.setVolume(e.target.value / 100);
+              });
+            }}
+          />
+          <p>Volume: {volume / 100}</p>
+        </div>
       </div>
       {wave.map(w => (
-        <div>
-          <div key={w.id} id={'waveform' + w.id}></div>
-          <button
-            onClick={() => {
-              wave2[w.id].playPause();
-            }}
-          >
-            Play/Pause
-          </button>
-          <p>{w.id}</p>
+        <div key={w.id} style={container2}>
+          <div id={'waveform' + w.id}></div>
+          <div>
+            <button
+              onClick={() => {
+                wave2[w.id].playPause();
+              }}
+            >
+              Play/Pause
+            </button>
+            <button>Button1</button>
+            <button>Button2</button>
+          </div>
         </div>
       ))}
     </div>
@@ -73,6 +95,14 @@ function App() {
 const container = {
   display: 'grid',
   gridTemplateColumns: '1fr',
+  gridGap: '2rem',
+  alignItems: 'center',
+  justifyContent: 'center'
+};
+
+const container2 = {
+  display: 'grid',
+  gridTemplateColumns: '2fr 1fr',
   gridGap: '2rem',
   alignItems: 'center',
   justifyContent: 'center'

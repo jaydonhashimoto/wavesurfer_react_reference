@@ -36,19 +36,18 @@ function App() {
       <div>
         <button
           onClick={() => {
-            console.log(wave[0]);
-            wave2[0].playPause();
-            wave2[1].playPause();
-            wave2[2].playPause();
+            wave2.forEach(wave => {
+              wave.playPause();
+            });
           }}
         >
           Play/Pause
         </button>
         <button
           onClick={() => {
-            wave2[0].stop();
-            wave2[1].stop();
-            wave2[2].stop();
+            wave2.forEach(wave => {
+              wave.stop();
+            });
           }}
         >
           Reset

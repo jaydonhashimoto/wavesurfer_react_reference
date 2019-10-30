@@ -6,22 +6,26 @@ function App() {
   const [wave, setWave] = useState([
     {
       id: 0,
+      offset: 0,
       link:
         'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/drums1.wav'
     },
     {
       id: 1,
+      offset: 0,
       link:
         'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/rhythm1.wav'
     },
     {
       id: 2,
+      offset: 0,
       link:
         'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/lead1.wav'
     }
   ]);
   const [wave2, setW2] = useState([]);
   const [volume, setCurrentVolume] = useState(25);
+  let count = 0;
 
   useEffect(() => {
     for (let i = 0; i < wave.length; ++i) {
@@ -38,8 +42,11 @@ function App() {
       <div>
         <button
           onClick={() => {
-            wave2.forEach(wave => {
-              wave.playPause();
+            wave2.forEach(w2 => {
+              setTimeout(function() {
+                w2.playPause();
+              }, wave[count].offset);
+              count++;
             });
           }}
         >
@@ -85,6 +92,26 @@ function App() {
             </button>
             <button>Button1</button>
             <button>Button2</button>
+            <input
+              type="range"
+              min="-10"
+              max="10"
+              value={w.offset}
+              className="slider2"
+              id="myRange"
+              onChange={e => {
+                setWave({
+                  ...wave,
+                  w: {
+                    offset: e.target.value
+                  }
+                });
+
+                // setWave((w.offset = e.target.value));
+              }}
+            />
+
+            <p>Offset: {w.offset}</p>
           </div>
         </div>
       ))}

@@ -27,6 +27,13 @@ function App() {
   const [volume, setCurrentVolume] = useState(25);
   let count = 0;
 
+  const updatedOffset = (id, value) => {
+    const newWave = wave;
+    const newOffset = value;
+    newWave[id].offset = newOffset;
+    setWave(newWave);
+  };
+
   useEffect(() => {
     for (let i = 0; i < wave.length; ++i) {
       wave2[i] = WaveSurfer.create({
@@ -94,24 +101,18 @@ function App() {
             <button>Button2</button>
             <input
               type="range"
-              min="-10"
-              max="10"
+              min="0"
+              max="1000"
+              step="50"
               value={w.offset}
               className="slider2"
               id="myRange"
               onChange={e => {
-                setWave({
-                  ...wave,
-                  w: {
-                    offset: e.target.value
-                  }
-                });
-
-                // setWave((w.offset = e.target.value));
+                //FIX, STATE NOT IMMEDIATELY UPDATING
+                updatedOffset(w.id, e.target.value);
               }}
             />
-
-            <p>Offset: {w.offset}</p>
+            <p>Offset: {w.offset} ms</p>
           </div>
         </div>
       ))}

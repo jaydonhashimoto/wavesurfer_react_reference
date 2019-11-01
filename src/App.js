@@ -25,14 +25,8 @@ function App() {
   ]);
   const [wave2, setW2] = useState([]);
   const [volume, setCurrentVolume] = useState(25);
+  const [offset, setOffset] = useState([]);
   let count = 0;
-
-  const updatedOffset = (id, value) => {
-    const newWave = wave;
-    const newOffset = value;
-    newWave[id].offset = newOffset;
-    setWave(newWave);
-  };
 
   useEffect(() => {
     for (let i = 0; i < wave.length; ++i) {
@@ -41,6 +35,9 @@ function App() {
       });
       wave2[i].setVolume(0.25);
       wave2[i].load(wave[i].link);
+      setOffset(offset => {
+        return { ...offset, [i]: 0 };
+      });
     }
   }, []);
 
@@ -52,9 +49,10 @@ function App() {
             wave2.forEach(w2 => {
               setTimeout(function() {
                 w2.playPause();
-              }, wave[count].offset);
+              }, offset[count]);
               count++;
             });
+            count = 0;
           }}
         >
           Play/Pause
@@ -104,15 +102,17 @@ function App() {
               min="0"
               max="1000"
               step="50"
-              value={w.offset}
+              value={offset[w.id]}
               className="slider2"
               id="myRange"
               onChange={e => {
-                //FIX, STATE NOT IMMEDIATELY UPDATING
-                updatedOffset(w.id, e.target.value);
+                const newOffset = e.target.value;
+                setOffset(offset => {
+                  return { ...offset, [w.id]: newOffset };
+                });
               }}
             />
-            <p>Offset: {w.offset} ms</p>
+            <p>Offset: {offset[w.id]} ms</p>
           </div>
         </div>
       ))}

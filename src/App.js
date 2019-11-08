@@ -6,19 +6,16 @@ function App() {
   const [wave, setWave] = useState([
     {
       id: 0,
-      offset: 0,
       link:
         'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/drums1.wav'
     },
     {
       id: 1,
-      offset: 0,
       link:
         'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/rhythm1.wav'
     },
     {
       id: 2,
-      offset: 0,
       link:
         'https://jaydon-hashimoto-test-bucket.s3-us-west-1.amazonaws.com/lead1.wav'
     }
@@ -26,6 +23,7 @@ function App() {
   const [wave2, setW2] = useState([]);
   const [volume, setCurrentVolume] = useState(25);
   const [offset, setOffset] = useState([]);
+  const [isChecked, setIsChecked] = useState([]);
   let count = 0;
 
   useEffect(() => {
@@ -38,6 +36,9 @@ function App() {
       setOffset(offset => {
         return { ...offset, [i]: 0 };
       });
+      setIsChecked(isChecked => {
+        return { ...isChecked, [i]: false };
+      });
     }
   }, []);
 
@@ -47,9 +48,11 @@ function App() {
         <button
           onClick={() => {
             wave2.forEach(w2 => {
-              setTimeout(function() {
-                w2.playPause();
-              }, offset[count]);
+              if (isChecked[count] === true) {
+                setTimeout(function() {
+                  w2.playPause();
+                }, offset[count]);
+              }
               count++;
             });
             count = 0;
@@ -88,6 +91,16 @@ function App() {
         <div key={w.id} style={container2}>
           <div id={'waveform' + w.id}></div>
           <div>
+            <input
+              type="checkbox"
+              name="tracks"
+              id={w.id}
+              onChange={e => {
+                setIsChecked(isChecked => {
+                  return { ...isChecked, [w.id]: !isChecked[w.id] };
+                });
+              }}
+            />
             <button
               onClick={() => {
                 wave2[w.id].playPause();
